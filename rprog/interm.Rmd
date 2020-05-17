@@ -1,0 +1,229 @@
+---
+title: "Intermediate R"
+author: "Sungbae Chun"
+date: "5/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Relational Operators
+
+
+```{r rel, echo=T}
+# comparisons ==,!=,>,<,>=,<=
+# are the same as python
+l = c(10,3,5,6,8)
+l >= 5
+l[l>5]
+v = c(3,5,6,1,9)
+#elemenwise comparison
+l>v
+```
+
+### Logical operators
+`&, |, !`<br>
+`T and T` won't work<br>
+`vec and vec` - elementwise
+```{r log}
+T & T
+
+```
+
+### Conditional statements
+
+```{r if}
+x=1
+if (x<1){
+  print("0 is less than 1")
+}else if (x==1){
+  print("x is zero")
+} else{
+  print(paste("x is larger than",1))
+}
+
+```
+
+## Loops
+
+### While loop
+
+```{r,eval=F}
+while(condition){
+  expr
+  if (condition){
+    break
+  }
+}
+```
+  
+### For loop
+```{r, eval=F}
+for(var in seq){
+  expr
+  if (cond){
+    next
+    #next == continue
+  }
+}
+```
+
+## Functions
+
+```{r, eval=F}
+?func
+
+my_fun = function(a1, a2 = a20){
+  body
+  return(some_val)
+}
+```
+
+## Packages
+
+```{r,eval=F}
+install.packages(<pkgname>)
+install.packages("ggvis")
+```
+
+
+```{r}
+library("ggvis")
+search()
+```
+
+
+### `lapply`
+
+```{r}
+a = list("a",2,c(10,20))
+lapply(a,class)
+
+n = c("Sungbae","Max","Win")
+lapply(n,nchar)
+
+multiply = function(x,fac){
+  x*fac
+}
+v = c(1,2,3)
+
+lapply(v,multiply,fac=3)
+```
+
+### `sapply`
+
+lapply - returns list<br>
+sapply - simplest struct
+```{r}
+n = c("Sungbae","Max","Win")
+sapply(n,nchar)
+sapply(n,nchar,USE.NAMES = F)
+```
+There are cases when sapply == lapply, you can check it using `identical(l,s)`
+
+### `vapply`
+
+ - **explicitly specify** output format
+
+```{r}
+n = c("Sungbae","Max","Win")
+
+sapply(n,nchar)
+vapply(n,nchar, numeric(1))
+
+f_l = function(name){
+  letters = strsplit(name, split = "")[[1]]
+  return(c(first=letters[1],second=letters[2]))
+}
+sapply(n,f_l)
+vapply(n,f_l,character(2))
+
+```
+
+## Useful functions
+
+```{r}
+li <- list(
+  log = T,
+  ch = "hello",
+  invec = sort(rep(seq(8,2,by=-2),times=2))
+)
+
+seq(8,2,by = -2)
+seq(1,10,by=2)
+
+rep(c(1,2), times=2)
+sort(rep(c(1,2), times=2))
+
+str(li)
+
+is.list(li)
+
+unlist(li)
+
+rev(li)
+
+append(li,c(10,20))
+```
+
+### Regex
+
+`grep, grepl, sub, gsub`
+
+`grepl(pattern = <regex>, x = <str>)`
+
+```{r}
+n = c("Chun","Mametkulov")
+grepl(pattern="a", x = n)
+# ^ - start
+grepl(patter="^C",x=n)
+# $ - end
+grepl(pattern="n$",x=n)
+
+grep(pattern="n$",x=n)
+```
+
+`sub(pattern=<reg>, replacement=<str>, x = <str>)`
+sub - only the first instance<br>
+
+gsub - all
+```{r}
+n = c("sungbae","mametkulov")
+gsub(pattern="u|a", replacement="_",
+     x=n)
+```
+
+
+## Times and Dates
+
+```{r}
+today = Sys.Date()
+today
+
+class(today)
+
+now = Sys.time()
+now
+class(now)
+
+my_date = as.Date("1999-10-10")
+my_date
+
+my_date = as.Date("10/10/1999",format = "%d/%m/%Y")
+my_date
+class(my_date)
+
+my_time = as.POSIXct("1999-10-10 11:25:15")
+my_time
+
+my_date
+my_date+30
+unclass(my_date)
+format(my_date, "%A")
+
+my_time
+my_time+2000
+unclass(my_time)
+```

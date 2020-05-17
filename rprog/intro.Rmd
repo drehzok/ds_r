@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r vector, echo=T}
 v = c(130,20,30)
+length(v)
 print("This is a vector")
 print(v)
 ```
@@ -49,6 +50,9 @@ v2 = c(4,5,6)
 print(c(v1,v2))
 matrix(c(v1,v2),byrow=T,ncol=3) -> newmat
 newmat
+
+ncol(newmat)
+nrow(newmat)
 
 #naming a matrix
 colnames(newmat) <- c("one","two","three")
