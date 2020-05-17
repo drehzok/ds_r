@@ -1,5 +1,5 @@
 ---
-title: "main"
+title: "Intro R"
 author: "Sungbae Chun"
 date: "5/17/2020"
 output: html_document
@@ -120,5 +120,49 @@ print(paste(fac_sp[1],"is greater than",
 **Creating** a dataframe
 ```{r dat, echo=T}
 name = c("Sungbae","Max")
+heights = c(175,190)
+is_cs = c(F,T)
+is_math = c(T,F)
 
+df = data.frame(name,heights,is_cs,is_math)
+print(df)
+print(summary(df))
+print(str(df))
+print(df[1,])
+print(df[,1])
+print(df[,"name"])
+print(df["name"])
+print(df$name)
+print(df[is_math,])
+print(df[is_cs,])
+subset(df, subset = heights>180)
+
+a = c(100,10,1000)
+print(order(a))
+print(a[order(a)])
+
+#sorting df
+positions = order(df$heights,decreasing = T) 
+df[positions,]
+```
+
+
+## Lists
+
+Can store **anything**
+
+```{r lst, echo=T}
+my_list = list(10,30,"wow",c(10,20))
+my_list
+
+my_list = list("dataframe" = df,
+               vector = c(10,20))
+my_list
+
+names(my_list) <- c("df","v")
+print(my_list)
+
+my_list[["v"]]
+#or
+my_list$v
 ```
