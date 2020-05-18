@@ -1,0 +1,37 @@
+---
+title: "Data Cleaning"
+author: "Sungbae Chun"
+date: "5/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Common data problems
+
+Reason of cleaning data:<br>
+
+(Human, technical error) -> Data -> Explore/Process data -> Extract insights -> Report
+
+<br>
+Checking if the data type is numeric: `is.numeric(df$col)`
+
+using assert (extra protection):
+```{r,eval=F}
+#install.packages("assertive")
+library(assertive)
+assert_is_numeric(df$col)
+```
+
+```{r}
+library(stringr)
+rev = c("5,2","3,5","4,5")
+ns = c("Sungbae","Max","Win")
+df = data.frame(rev,ns)
+s = str_remove(rev,",")
+df %>% mutate(revs = as.numeric(str_remove(rev,",")))
+```
+
+

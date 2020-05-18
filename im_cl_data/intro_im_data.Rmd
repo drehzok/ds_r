@@ -1,0 +1,110 @@
+---
+title: "Intro to importing data"
+author: "Sungbae Chun"
+date: "5/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 5 types of data
+
+ - flat files
+ - data from excel
+ - databases
+ - web
+ - statistical software (SAS, STATA, SPSS)
+
+
+## Importing data from flat files
+
+### Using utils
+
+Importing to dataframe from csv files: utils - read.csv
+<br>
+`read.csv("<path>", args...)`<br>
+`path = file.path("~","data","my_data.csv")`
+
+set `header=F` if data starts withough labels
+
+```{r}
+path = file.path("~","Courses","ds_r","im_cl_data","gpa.csv")
+gpa2020s = read.csv(path,stringsAsFactors = F)
+gpa2020s
+str(gpa2020s)
+```
+<br><br>
+**Dealing with delimited files**<br>
+`read.delim("<path",sep="<your_delim>")`
+<br>
+`df[which.min(df$col),]` selects min<br><br>
+**Explicit class**<br>
+`read.delim(<path>, colClasses = <str_vector of classnames>)`
+<br>Columns with `NULL` colclass will be skipped
+
+<br>
+
+
+### Using readr
+
+Why use readr instead of utils?
+ - Fast, easy to use, consistent
+ - utils: complex expr, slow
+```{r}
+library(readr)
+```
+
+```{r}
+gpa = read_csv("./gpa.csv",col_types = "cccdd")
+#col_types, c - char, d - double, i - integer, l - logical, _ - skip, ? - guess
+# t - time, T - date time, D - date, n - number
+#col_names = <str_vec> to specify col names
+gpa$grade = factor(x=gpa$grade, ordered = T, levels = c("B","B+","A-","A"))
+
+ch = col_character()
+f = col_factor(ordered = T, levels = c("C+","B-","B","B+","A-","A"))
+i = col_integer()
+d = col_double()
+gpa = read_csv('./gpa.csv',col_types = list(ch,ch,f,i,d))
+# skip -> skiprows, n_max -> read maximum n_max rows
+summary(gpa)
+str(gpa)
+```
+
+## Data.table
+
+ - key: speed
+ - Data manipulation in R
+ - **fread()**
+ 
+```{r}
+library(data.table)
+
+#fread automatically deals with missing colnames
+fread("./gpa.csv")
+# infers separators, types, and crazy fast
+fread('gpa.csv',select=c("numgrade","credit"))
+fread('gpa.csv',drop = c("grade","code"))
+fread('gpa.csv',drop=1:2)
+```
+
+## Importing Excel data
+
+```{r}
+library(readxl)
+excel_sheets("gpa.xlsx")
+g2020s = read_excel("gpa.xlsx",sheet=1)
+g2019f = read_excel("gpa.xlsx",sheet=2)
+g2019f
+
+
+#using lapply
+gpa2y = lapply(excel_sheets("gpa.xlsx"),read_excel, path = "gpa.xlsx")
+gpa2y
+str(gpa2y)
+```
+ 
+ 
+ 
